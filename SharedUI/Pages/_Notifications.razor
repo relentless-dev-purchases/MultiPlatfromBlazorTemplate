@@ -1,0 +1,62 @@
+<!--Blazor Page in a Blazor Maui Application for a safety and security information and response based application. Please complete by adding API call interface in comments and code for this page that takes into account the following information, adding what might be useful even if not mentioned.:-->
+@page "/Notifications"
+
+<!-- This page provides an overview of user notifications alerts updates related their account application purpose such as new messages friend requests event invitations etc notifications displayed list format each notification having icon title description timestamp etc -->
+@using The_Watch.Pages
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject INotificationService NotificationService
+
+<h1>Notifications</h1>
+
+@if (notifications == null)
+{
+    <p>Loading...</p>
+}
+else if (notifications.Count == 0)
+{
+    <p>No notifications.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var notification in notifications)
+        {
+            <a href="@notification.Url" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@notification.Title</h5>
+                    <small>@notification.Timestamp.ToString("g")</small>
+                </div>
+                <p class="mb-1">@notification.Description</p>
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private List<Notification> notifications;
+
+    protected override async Task OnInitializedAsync()
+    {
+        notifications = await NotificationService.GetNotificationsAsync();
+    }
+
+    public class Notification
+    {
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Url { get; set; }
+
+        public DateTime Timestamp { get; set; }
+    }
+}
+
+<!--
+@* Interface for API call *@
+public interface INotificationService
+{
+    Task<List<Notification>> GetNotificationsAsync();
+}
+-->

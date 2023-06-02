@@ -1,0 +1,64 @@
+@page "/EmergencyContact"
+@using The_Watch.Pages
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IEmergencyContactService EmergencyContactService
+@using MudBlazor
+
+<h1>Emergency Contact</h1>
+
+<MudForm @ref="form" Model="@emergencyContactModel" OnValidSubmit="@HandleValidSubmit">
+    <MudTextField @bind-Value="@emergencyContactModel.Name" Label="Name" For="@(() => emergencyContactModel.Name)" Variant="Variant.Outlined" />
+    <MudTextField @bind-Value="@emergencyContactModel.Relationship" Label="Relationship" For="@(() => emergencyContactModel.Relationship)" Variant="Variant.Outlined" />
+    <MudTextField @bind-Value="@emergencyContactModel.PhoneNumber" Label="Phone Number" For="@(() => emergencyContactModel.PhoneNumber)" Variant="Variant.Outlined" />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!form.IsValid)">Submit</MudButton>
+</MudForm>
+
+@code {
+    private MudForm form;
+    private EmergencyContactModel emergencyContactModel = new EmergencyContactModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var emergencyContact = await EmergencyContactService.GetEmergencyContactAsync();
+        if (emergencyContact != null)
+        {
+            emergencyContactModel.Name = emergencyContact.Name;
+            emergencyContactModel.Relationship = emergencyContact.Relationship;
+            emergencyContactModel.PhoneNumber = emergencyContact.PhoneNumber;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var result = await EmergencyContactService.SaveEmergencyContactAsync(emergencyContactModel);
+            if (result.Success)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Emergency contact saved successfully.");
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", result.ErrorMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", ex.Message);
+        }
+    }
+
+    public class EmergencyContactModel
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Relationship { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
+    }
+}

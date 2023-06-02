@@ -1,0 +1,26 @@
+﻿<!--Please create a shop page that allows users to reward individuals who have shown up for them or people they care about. Responders list may only be used for rewards if the requesting/participating individuals wish for them to be shared.-->
+@page "/rewardshop"
+@inject NavigationManager NavigationManager
+
+<MudContainer>
+    <h1>Reward Shop</h1>
+
+    <MudText Typo="Typo.h6">Reward individuals who have shown up for you or people you care about.</MudText>
+
+    <MudContainer Class="form-group">
+        <MudCheckBox Label="Include Responders List for Rewards" @bind-Checked="@includeRespondersList" />
+    </MudContainer>
+
+    <MudContainer Class="form-group">
+        <MudButton Class="btn btn-primary" OnClick="@ShowRewardForm">Show Reward Form</MudButton>
+    </MudContainer>
+</MudContainer>
+
+@code {
+    private bool includeRespondersList;
+
+    private void ShowRewardForm()
+    {
+        NavigationManager.NavigateTo("/rewardform");
+    }
+}

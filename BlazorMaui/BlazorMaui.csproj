@@ -71,4 +71,22 @@
     <ItemGroup>
       <ProjectReference Include="..\SharedUI\SharedUI.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Platforms\iOS\VoiceAssistant.cs">
+        <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+      </Compile>
+      <Compile Update="Platforms\MacCatalyst\VoiceAssistant.cs">
+        <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+      </Compile>
+      <Compile Update="Platforms\Tizen\VoiceAssistant.cs">
+        <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+      </Compile>
+      <Compile Update="Platforms\Windows\VoiceAssistant.cs">
+        <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="API\" />
+      <Folder Include="Services\" />
+    </ItemGroup>
 </Project>

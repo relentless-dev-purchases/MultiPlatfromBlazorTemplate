@@ -1,0 +1,99 @@
+﻿<!--
+Please update with MudBlazor components. Include usings, etc.
+Our Blazor Maui application, Hosted on a Modified Oqtane Server, is designed to sign up and login users, which includes government, private citizens, and organization users, as well as further descriptions such as parents and children, administrators, responders, etc, for use in tracking user locations and helping users contact others' instantly when needing them to show up and check in in the case of violent conflict, emergency evacuation (in events such as wildfire and hurricane), and otherwise. We will have products to sell, petitions to sign, information about events including pictures, video, and text to share with the server and later, surveys to request and respond do, and other items. Users will also be able to sign up to provide things like pet services and food delivery after another user has an emergency and requests additional aid. Please expand and update accordingly, adding additional aspects likely requested.  
+Please help us create a blazor page to display a user's list of events they were involved in. This page should display the event name, date, and location. The user should be able to click on the event name to view the event details. The user should be able to click on the location to view the location on a map. The user should be able to click on the date to v
+Etc. Please use your judgment and add to the description and update the code accordingly. !-->
+!-->
+
+
+@page "/EventHistory"
+@using The_Watch.Pages
+@using The_Watch.Interfaces;
+@inject IEventService EventService
+@inject NavigationManager NavigationManager
+@using MudBlazor
+
+<MudContainer>
+    <MudText Typo="Typo.h5">Event History</MudText>
+    <MudTable Items="@events" Hover="true" RowClickAction="@((ev) => GoToEvent(ev))">
+        <MudTh><MudText>Event Name</MudText></MudTh>
+        <MudTh><MudText>Date</MudText></MudTh>
+        <MudTh><MudText>Location</MudText></MudTh>
+        <MudTd DataLabel="Event Name">@context.EventName</MudTd>
+        <MudTd DataLabel="Date">@context.Date.ToString("MM/dd/yyyy")</MudTd>
+        <MudTd DataLabel="Location">@context.Location</MudTd>
+    </MudTable>
+</MudContainer>
+
+@code {
+    private List<Event> events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await EventService.GetUserEventsAsync();
+    }
+
+    private void GoToEvent(Event ev)
+    {
+        NavigationManager.NavigateTo($"/eventdetails/{ev.EventId}");
+    }
+
+    public class Event
+    {
+        public int EventId { get; set; }
+        public string EventName { get; set; }
+        public DateTime Date { get; set; }
+        public string Location { get; set; }
+    }
+
+    public class WatchEvent
+    {
+        public Guid Id { get; set; } = new Guid();
+
+        [Range(-90, 90, ErrorMessage = "Latitude must be between -90 and 90")]
+        public double Latitude { get; set; }
+
+        [Range(-180, 180, ErrorMessage = "Longitude must be between -180 and 180")]
+        public double Longitude { get; set; }
+
+        [StringLength(500, ErrorMessage = "Description cannot be more than 500 characters")]
+        public string? Description { get; set; }
+
+        [StringLength(100, ErrorMessage = "Title cannot be more than 100 characters")]
+        public string? Title { get; set; }
+
+        public string? Image { get; set; }
+
+        [RegularExpression(@"^(crime|accident|emergency|disaster)$", ErrorMessage = "Type must be 'crime', 'accident', 'emergency', or 'disaster'")]
+        public string? Type { get; set; }
+
+        public DateTime? StartTime { get; set; }
+
+        public DateOnly StartDate { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+        public DateOnly EndDate { get; set; }
+
+        public List<Responder> Responders { get; set; }
+
+        public bool HasEnded { get; set; } = false;
+
+        public bool IsDeleted { get; set; } = false;
+
+        [Range(0, int.MaxValue, ErrorMessage = "Elapsed time must be a positive integer")]
+        public int ElapsedTime { get; set; }
+
+        public string? IncidentNumber { get; set; }
+
+        [RegularExpression(@"^(High|Medium|Low)$", ErrorMessage = "Priority must be 'High', 'Medium', or 'Low'")]
+        public string? Priority { get; set; }
+
+        [Range(0, 100, ErrorMessage = "PercentageComplete must be between 0 and 100")]
+        public int PercentageComplete { get; set; }
+
+        [StringLength(50, ErrorMessage = "IncidentStatus cannot be more than 50 characters")]
+        public string? IncidentStatus { get; set; }
+    }
+}
+

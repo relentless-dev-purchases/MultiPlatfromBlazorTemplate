@@ -1,0 +1,66 @@
+﻿<!--
+Our Blazor Maui application, Hosted on a Modified Oqtane Server, is designed to sign up and login users, which includes government, private citizens, and organization users, as well as further descriptions such as parents and children, administrators, responders, etc, for use in tracking user locations and helping users contact others' instantly when 
+needing them to show up and check in in the case of violent conflict, emergency evacuation (in events such as wildfire and hurricane), and otherwise. We will have products to sell, petitions to sign, information about events including pictures, video, and text to share with the server and later, surveys to request and respond do, and other items. Users
+will also be able to sign up to provide things like pet services and food delivery after another user has an emergency and requests additional aid. Please expand and update accordingly, adding additional aspects likely requested.  
+Please create an event view so that the user can see image, text, video, and vocal submissions from responders and survey participants.Please use MudBlazor
+!-->
+
+
+@page "/eventview"
+@using MudBlazor
+@using The_Watch.Pages
+@inject NavigationManager NavigationManager
+
+<h1>Event View</h1>
+
+<div>
+    <!-- Event image -->
+    <MudCard Class="event-image">
+        <MudCardMedia>
+            <img src="event-image-url" alt="Event Image">
+        </MudCardMedia>
+    </MudCard>
+</div>
+
+<div>
+    <!-- Event text -->
+    <MudPaper Class="event-text">
+        <MudTypography Variant="TypographyVariant.Body1">
+            Event description goes here
+        </MudTypography>
+    </MudPaper>
+</div>
+
+<div>
+    <!-- Event video -->
+    <MudCard Class="event-video">
+        <MudCardMedia>
+            <!-- Add video player component here for the event video -->
+        </MudCardMedia>
+    </MudCard>
+</div>
+
+<div>
+    <!-- Event vocal submissions -->
+    <MudCard Class="event-vocal-submissions">
+        <MudCardContent>
+            <MudTypography Variant="TypographyVariant.Subtitle1">Vocal Submissions</MudTypography>
+            <!-- Add component to display vocal submissions from responders and survey participants -->
+        </MudCardContent>
+    </MudCard>
+</div>
+
+<div>
+    <!-- Event survey participants -->
+    <MudCard Class="event-survey-participants">
+        <MudCardContent>
+            <MudTypography Variant="TypographyVariant.Subtitle1">Survey Participants</MudTypography>
+            <!-- Add component to display survey participants' submissions -->
+        </MudCardContent>
+    </MudCard>
+</div>
+
+@code {
+    // Add code to retrieve event data and handle submission display
+    // You can use services and models specific to your application
+}
